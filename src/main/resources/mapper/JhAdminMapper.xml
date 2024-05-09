@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinghai.system.mapper.JhAdminMapper">
+
+    <resultMap id="BaseResultMap" type="com.jinghai.system.domain.entity.JhAdmin">
+            <result property="adminId" column="admin_id" jdbcType="BIGINT"/>
+            <result property="adminUsername" column="admin_username" jdbcType="VARCHAR"/>
+            <result property="adminPassword" column="admin_password" jdbcType="VARCHAR"/>
+            <result property="adminAvatar" column="admin_avatar" jdbcType="VARCHAR"/>
+            <result property="adminCreateTime" column="admin_create_time" jdbcType="TIMESTAMP"/>
+            <result property="adminDescribe" column="admin_describe" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        admin_id,admin_username,admin_password,
+        admin_avatar,admin_create_time,admin_describe
+    </sql>
+</mapper>

@@ -1,0 +1,66 @@
+#  ????
+async:
+  executor:
+    thread:
+      # ??????
+      # ???????
+      core_pool_size: 5
+      # ???????
+      max_pool_size: 5
+      # ??????
+      queue_capacity: 99999
+      # ??????????????
+      name:
+        prefix: async-service-student
+
+
+server:
+  port: 8082
+  servlet:
+    context-path: /student
+
+spring:
+  thymeleaf:
+    cache: false
+  servlet:
+    multipart:
+      #?????????? ????100M
+      max-request-size: 100MB
+      #?????????? ????100M
+      max-file-size: 100MB
+
+  mail:
+    default-encoding: utf-8
+    host: smtp.qq.com
+    port: 587
+    username: 1223131427@qq.com
+    password: vkmuivusgrmbhehi
+    properties:
+      mail:
+        #??SSL ????
+        smtp:
+          ssl:
+            #????????ssl
+            enable: false
+            required: false
+          #??debug??????????????????????????????
+  #        debug: true
+
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/student-s
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+  application:
+    name: student
+
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.example.entity
+

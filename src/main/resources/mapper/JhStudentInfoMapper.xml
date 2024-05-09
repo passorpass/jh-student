@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinghai.system.mapper.JhStudentInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.jinghai.system.domain.entity.JhStudentInfo">
+            <id property="studentId" column="student_id" jdbcType="BIGINT"/>
+            <result property="studentName" column="student_name" jdbcType="VARCHAR"/>
+            <result property="studentAge" column="student_age" jdbcType="VARCHAR"/>
+            <result property="studentSex" column="student_sex" jdbcType="VARCHAR"/>
+            <result property="studentAddress" column="student_address" jdbcType="VARCHAR"/>
+            <result property="studentPhone" column="student_phone" jdbcType="VARCHAR"/>
+            <result property="studentBeginSchool" column="student_begin_school" jdbcType="TIMESTAMP"/>
+            <result property="studentHasSchool" column="student_has_school" jdbcType="VARCHAR"/>
+            <result property="studentIdcard" column="student_idcard" jdbcType="VARCHAR"/>
+            <result property="studentLeaderTecher" column="student_leader_techer" jdbcType="VARCHAR"/>
+            <result property="studentSocialPresence" column="student_social_presence" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        student_id,student_name,student_age,
+        student_sex,student_address,student_phone,
+        student_begin_school,student_has_school,student_idcard,
+        student_leader_techer,student_social_presence
+    </sql>
+</mapper>
