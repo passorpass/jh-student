@@ -1,5 +1,6 @@
 package com.jinghai.common.Enum;
 
+import com.fasterxml.jackson.core.io.UTF8Writer;
 import lombok.Getter;
 
 @Getter
@@ -13,10 +14,10 @@ public enum ResultCodeEnum {
     ILLEGAL_REQUEST(205, "非法请求"),
     REPEAT_SUBMIT(206, "重复提交"),
 
-    LOGIN_AUTH(401, "未登陆"),
+    LOGIN_AUTH(207, "未登陆"),
     PERMISSION(209, "没有权限"),
 
-    UNAUTHORIZED(401, "unauthorized"),
+    UNAUTHORIZED(401, "未授权"),
 
     ;
 

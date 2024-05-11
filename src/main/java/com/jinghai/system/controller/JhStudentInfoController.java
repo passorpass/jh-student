@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jinghai.common.util.Result;
 import com.jinghai.system.domain.entity.JhStudentInfo;
 import com.jinghai.system.service.JhStudentInfoService;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +26,7 @@ public class JhStudentInfoController {
     private JhStudentInfoService studentInfoService;
 
     @GetMapping("/page")
-    @RequiresPermissions("user:list")
+    @RequiresRoles(value = "admin",logical = Logical.OR)
     public Result getStudentInfopage(@RequestParam(value = "page") int page
             , @RequestParam(value = "pageSize") int pageSize
             , @RequestParam(value = "keyName", required = false) String keyname

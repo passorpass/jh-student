@@ -12,7 +12,9 @@ import com.jinghai.common.util.TokenUtils;
 import com.jinghai.framework.exception.ServiceException;
 import com.jinghai.framework.shiro.JwtToken;
 import com.jinghai.system.domain.entity.JhAdmin;
+import com.jinghai.system.domain.entity.JhUserRole;
 import com.jinghai.system.service.JhAdminService;
+import com.jinghai.system.service.JhUserRoleService;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -38,7 +40,7 @@ import static cn.hutool.poi.excel.sax.AttributeName.s;
 public class UserRealm extends AuthorizingRealm {
 
     @Resource
-    private JhAdminService adminService;
+    private JhUserRoleService roleService;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -50,13 +52,25 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        //这里进行aop的鉴权认证，由于我们只有管理端，所有权限认证直接略过，可根据后续拓展再进行权限认证
-        //TODO
-
         System.out.println("执行授权逻辑");
+        //获得用户id，token信息
+        Claims claims = TokenUtils.parseJWT(Constant.TOKEN_SECRET_KEY, (String) principalCollection.getPrimaryPrincipal());
+        Long Id = Long.valueOf(claims.get("admin").toString());
+        //查询用户权限库进行授权
+        JhUserRole jhUserRole =
+                roleService.getOne(new LambdaQueryWrapper<JhUserRole>().eq(JhUserRole::getUserId,
+                        Id));
+
+        //打印一下授权到的权限信息
+        log.info("role =>{}",jhUserRole.getAuthoRole());
+        log.info("Permissions =>{}",jhUserRole.getAuthoPermissions());
+
+        //进行授权
+        String[] roleStr = jhUserRole.getAuthoPermissions().split(",");
+        Set<String> roleSet = new HashSet<>(Arrays.asList(roleStr));
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        List<String> authoList = Arrays.asList("user:add", "user:list", "user:del", "user:update");
-        info.addStringPermissions(authoList);
+        info.addStringPermissions(roleSet);
+        info.addRole(jhUserRole.getAuthoRole());
         System.out.println("getStringPermissions = " + info.getStringPermissions());
 
         return info;

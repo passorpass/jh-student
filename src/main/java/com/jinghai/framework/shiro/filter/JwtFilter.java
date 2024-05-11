@@ -70,7 +70,6 @@ public class JwtFilter extends BasicHttpAuthenticationFilter implements Filter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         log.info("执行 isAccessAllowed");
-        System.out.println("mappedValue = " + mappedValue);
         try {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             //input request to request log file
@@ -100,9 +99,9 @@ public class JwtFilter extends BasicHttpAuthenticationFilter implements Filter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         log.info("执行 onAccessDenied");
-        Result result = Result.build("fail",ResultCodeEnum.UNAUTHORIZED);
-        Object parse = JSONObject.from(result);
-        response.setCharacterEncoding("utf-8");
+        Result result = Result.ThrowException(ResultCodeEnum.UNAUTHORIZED);
+        String parse = JSONObject.toJSONString(result);
+        response.setCharacterEncoding("UTF-8");
         response.getWriter().print(parse);
         return super.onAccessDenied(request, response);
     }

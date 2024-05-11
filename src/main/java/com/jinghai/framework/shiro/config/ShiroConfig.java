@@ -6,6 +6,8 @@ import com.jinghai.framework.shiro.Realm.UserRealm;
 
 import com.jinghai.framework.shiro.filter.JwtFilter;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -33,12 +35,12 @@ public class ShiroConfig {
      * 解决spring aop和注解配置一起使用的bug。如果您在使用shiro注解配置的同时，引入了spring
      * aop的starter，会有一个奇怪的问题，导致shiro注解的请求，不能被映射
      */
-    @Bean
-    public static DefaultAdvisorAutoProxyCreator creator() {
-        DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
-        creator.setProxyTargetClass(true);
-        return creator;
-    }
+//    @Bean
+//    public static DefaultAdvisorAutoProxyCreator creator() {
+//        DefaultAdvisorAutoProxyCreator creator = new DefaultAdvisorAutoProxyCreator();
+//        creator.setProxyTargetClass(true);
+//        return creator;
+//    }
 
     /**
      * Enable Shiro AOP annotation support. --<1>
@@ -85,18 +87,34 @@ public class ShiroConfig {
     /**
      * 创建DefaultWebSecurityManager
      */
-    @Bean
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(UserRealm userRealm,
-                                                                  LoginRealm loginRealm) {
-
+    /**
+     * 安全管理器
+     * 它是Shiro框架的核心，典型的Facade模式，Shiro通过SecurityManager来管理内部组件实例，
+     * 并通过它来提供安全管理的各种服务
+     */
+    @Bean("securityManager")
+    public DefaultWebSecurityManager securityManager(UserRealm userRealm,
+                                                     LoginRealm loginRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        // 自定义Realm验证，这个Realm是最终用于完成我们的认证和授权操作的具体对象
         //关联realm
         List<Realm> realms = new ArrayList<>();
         realms.add(userRealm);
         realms.add(loginRealm);
         securityManager.setRealms(realms);
+        /*
+         * 关闭shiro自带的session，详情见文档
+         * http://shiro.apache.org/session-management.html#SessionManagement-StatelessApplications%28Sessionless%29
+         */
+        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
+        securityManager.setSubjectDAO(subjectDAO);
+
         return securityManager;
     }
+
 
     /**
      * Realm for login --<3>
