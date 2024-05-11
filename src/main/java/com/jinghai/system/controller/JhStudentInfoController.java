@@ -10,10 +10,7 @@ import com.jinghai.system.service.JhStudentInfoService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -22,9 +19,21 @@ import javax.annotation.Resource;
 public class JhStudentInfoController {
 
 
+    //基本学生信息表
     @Resource
     private JhStudentInfoService studentInfoService;
 
+
+    /**
+     * 分页查询和搜索学生信息
+     * @param page
+     * @param pageSize
+     * @param keyname
+     * @param begin
+     * @param end
+     * @param social
+     * @return
+     */
     @GetMapping("/page")
     @RequiresRoles(value = "admin",logical = Logical.OR)
     public Result getStudentInfopage(@RequestParam(value = "page") int page
@@ -44,6 +53,25 @@ public class JhStudentInfoController {
                     .like(!ObjectUtil.isEmpty(keyname), JhStudentInfo::getStudentHasSchool, keyname));
 
             return Result.ok(infoPage);
+    }
+
+
+    /**
+     * 根据id回写数据
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @RequiresRoles("admin")
+    public Result getById(@PathVariable("id")Long id){
+        /**
+         * 还要关联其他表现阶段只查基本信息
+         */
+        JhStudentInfo jhStudentInfo = studentInfoService.getById(id);
+        if(ObjectUtil.isEmpty(jhStudentInfo)){
+            return Result.fail("查询失败，暂无此学生");
+        }
+        return Result.ok(jhStudentInfo);
     }
 
 }

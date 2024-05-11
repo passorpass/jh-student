@@ -17,7 +17,7 @@ async:
 server:
   port: 8082
   servlet:
-    context-path: /student
+    context-path: /jh
 
 spring:
   thymeleaf:

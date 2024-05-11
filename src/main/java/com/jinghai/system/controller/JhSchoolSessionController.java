@@ -22,7 +22,6 @@ public class JhSchoolSessionController {
     @GetMapping("/gss")
     public Result getListData(){
         List<JhSchoolSession> jhSchoolSessions = schoolSessionService.list();
-
         return Result.ok(jhSchoolSessions);
     }
 }

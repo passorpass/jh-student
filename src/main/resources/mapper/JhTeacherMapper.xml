@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinghai.system.mapper.JhTeacherMapper">
+
+    <resultMap id="BaseResultMap" type="com.jinghai.system.domain.entity.JhTeacher">
+            <id property="teacherId" column="teacher_id" jdbcType="BIGINT"/>
+            <result property="teacherName" column="teacher_name" jdbcType="VARCHAR"/>
+            <result property="teacherSex" column="teacher_sex" jdbcType="VARCHAR"/>
+            <result property="teacherAge" column="teacher_age" jdbcType="VARCHAR"/>
+            <result property="teacherAddress" column="teacher_address" jdbcType="VARCHAR"/>
+            <result property="teacherPhone" column="teacher_phone" jdbcType="VARCHAR"/>
+            <result property="teacherIdcar" column="teacher_idcar" jdbcType="VARCHAR"/>
+            <result property="doWorkSchool" column="do_work_school" jdbcType="VARCHAR"/>
+            <result property="teacherYear" column="teacher_year" jdbcType="VARCHAR"/>
+            <result property="teacherPosition" column="teacher_position" jdbcType="VARCHAR"/>
+            <result property="leaveSchoolTime" column="leave_school_time" jdbcType="TIMESTAMP"/>
+            <result property="entrySchoolTime" column="entry_school_time" jdbcType="TIMESTAMP"/>
+            <result property="teacherStatus" column="teacher_status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        teacher_id,teacher_name,teacher_sex,
+        teacher_age,teacher_address,teacher_phone,
+        teacher_idcar,do_work_school,teacher_year,
+        teacher_position,entry_school_time,leave_school_time,teacher_status
+    </sql>
+</mapper>
