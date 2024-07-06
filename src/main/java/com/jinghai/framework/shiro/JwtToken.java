@@ -25,7 +25,6 @@ public class JwtToken implements AuthenticationToken{
 
     @Override
     public String getPrincipal() { //相当于用户名
-
         return token;
     }
 

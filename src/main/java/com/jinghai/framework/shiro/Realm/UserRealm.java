@@ -1,36 +1,23 @@
 package com.jinghai.framework.shiro.Realm;
 
 
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.jinghai.common.Enum.ResultCodeEnum;
 import com.jinghai.common.constant.Constant;
 import com.jinghai.common.context.BaseContext;
-import com.jinghai.common.properties.SufferProperty;
 import com.jinghai.common.util.TokenUtils;
-import com.jinghai.framework.exception.ServiceException;
 import com.jinghai.framework.shiro.JwtToken;
-import com.jinghai.system.domain.entity.JhAdmin;
 import com.jinghai.system.domain.entity.JhUserRole;
-import com.jinghai.system.service.JhAdminService;
 import com.jinghai.system.service.JhUserRoleService;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.realm.SimpleAccountRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.SimplePrincipalCollection;
 
 import javax.annotation.Resource;
 import java.util.*;
-
-import static cn.hutool.poi.excel.sax.AttributeName.s;
 
 /**
  * @Description:自定义Realm 处理登录 权限

@@ -9,10 +9,11 @@
             <result property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="authoPermissions" column="autho_permissions" jdbcType="VARCHAR"/>
             <result property="authoRole" column="autho_role" jdbcType="VARCHAR"/>
+            <result property="autho_describe" column="autho_describe" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,user_id,autho_permissions,
-        autho_role
+        autho_role,autho_describe
     </sql>
 </mapper>

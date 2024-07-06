@@ -23,6 +23,7 @@ public class StudentApplication {
 
     public static void main(String[] args) throws UnknownHostException {
 
+
         LocalDateTime start = LocalDateTime.now();
         ConfigurableApplicationContext application = SpringApplication.run(StudentApplication.class, args);
         LocalDateTime end = LocalDateTime.now();
@@ -32,12 +33,12 @@ public class StudentApplication {
         Environment env = application.getEnvironment();
         String ip = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");
-        String name = env.getProperty("spring.application.name");
+        String name = env.getProperty("server.servlet.context-path");
         System.out.println("\n----------------------------------------------------------\n\t" +
                 "Application system is running! Access URLs:\n\t" +
-                "CustomerLocal: \t\thttp://localhost:"+ port + "/"+name+ "/\n\t" +
-                "BackLocal:  \t\thttp://localhost:" + port +  "/"+name+ "/\n\t" +
-                "External:  \t\thttp://" + ip + ":" + port  + "/"+name+"/\n\t" +
+                "CustomerLocal: \t\thttp://localhost:"+ port +name+ "/\n\t" +
+                "BackLocal:  \t\thttp://localhost:" + port +name+ "/\n\t" +
+                "External:  \t\thttp://" + ip + ":" + port  +name+"/\n\t" +
                 "----------------------------------------------------------");
 
     }

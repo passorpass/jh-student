@@ -15,17 +15,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class) // 异常处理器
-    // 调用前面统一返回结果类
-    public Result error(@NotNull RuntimeException e) {
-        e.printStackTrace();
-        return Result.fail(null);
-    }
-
     // 自定义异常处理
     @ExceptionHandler(ServiceException.class)
-    public Result error(@NotNull ServiceException exception) {
-        return Result.build(null, exception.getCode(), exception.getMessage());
+    public ResponseEntity error(@NotNull ServiceException exception) {
+        Result<Object> build = Result.build(null, exception.getCode(), exception.getMessage());
+        return ResponseEntity.status(exception.getCode()).body(build);
     }
 
     @ExceptionHandler(AuthorizationException.class)

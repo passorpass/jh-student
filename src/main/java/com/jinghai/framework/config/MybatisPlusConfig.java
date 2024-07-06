@@ -3,6 +3,8 @@ package com.jinghai.framework.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.jinghai.framework.interceptor.MybatisLogSqlInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,6 +19,16 @@ public class MybatisPlusConfig {
         return mybatisPlusInterceptor;
     }
 
+    /**
+     * sql 日志
+     *
+     * @return SqlLogInterceptor
+     */
+    @Bean
+    @ConditionalOnProperty(value = "blade.mybatis-plus.sql-log", matchIfMissing = true)
+    public MybatisLogSqlInterceptor sqlLogInterceptor() {
+        return new MybatisLogSqlInterceptor();
+    }
 
 
 }

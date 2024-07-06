@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * <p>
@@ -24,4 +25,8 @@ public class LoginVo implements Serializable {
     private String token;
     //描述
     private String desc;
+    //角色列表
+    private String role;
+    //权限列表
+    private Set<String> permissions;
 }

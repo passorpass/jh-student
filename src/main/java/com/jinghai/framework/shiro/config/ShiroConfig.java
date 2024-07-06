@@ -69,8 +69,8 @@ public class ShiroConfig {
         //添加Shiro内置过滤器
         Map<String, String> filterMap = new LinkedHashMap<String, String>();
 
-        filterMap.put("/admin/login", "anon");
-        filterMap.put("/admin/logout", "anon");
+        filterMap.put("/jhs/login", "anon");
+        filterMap.put("/jhs/logout", "anon");
         Map<String, Filter> filterMaps = new LinkedHashMap<String, Filter>();
         // 添加自己的自定义拦截器并且取名为jwt
         filterMaps.put("jwt", new JwtFilter());

@@ -1,22 +1,26 @@
 package com.jinghai.framework.shiro.Realm;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.jinghai.common.Enum.ResultCodeEnum;
 import com.jinghai.common.constant.Constant;
+import com.jinghai.common.util.EncryUtil;
 import com.jinghai.common.util.TokenUtils;
+import com.jinghai.framework.exception.ServiceException;
 import com.jinghai.framework.shiro.service.impl.LoginDataAutoToken;
-import com.jinghai.system.domain.entity.JhAdmin;
+import com.jinghai.system.domain.entity.JhUser;
 import com.jinghai.system.service.JhAdminService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.jinghai.common.properties.SufferProperty.ENCRYSUFFER;
 
 @Slf4j
 public class LoginRealm extends AuthorizingRealm {
@@ -43,20 +47,24 @@ public class LoginRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
-        LoginDataAutoToken token = (LoginDataAutoToken) auth;
+        UsernamePasswordToken token = (UsernamePasswordToken) auth;
         log.info(token.getUsername() + " password auth start...");
-        JhAdmin jhAdmin =
-                adminService.getOne(new LambdaQueryWrapper<JhAdmin>().eq(JhAdmin::getAdminUsername
+        JhUser jhUser =
+                adminService.getOne(new LambdaQueryWrapper<JhUser>().eq(JhUser::getAdminUsername
         ,token.getUsername()));
-        if (jhAdmin == null) throw new UnknownAccountException();
+        if (jhUser == null) throw new UnknownAccountException();
+        String newpassWord = ENCRYSUFFER + Arrays.toString(token.getPassword());
+        if(!EncryUtil.comparePasswords(newpassWord, jhUser.getAdminPassword())){
+            throw new ServiceException(ResultCodeEnum.FAIL);
+        }
         Map<String, Object> claims = new HashMap<>();
-        claims.put("admin", jhAdmin.getAdminId());
+        claims.put("admin", jhUser);
         String authtoken = TokenUtils.createJWT(
                 Constant.TOKEN_SECRET_KEY,
                 Constant.TOKEN_EXPIRE_TIME,
                 claims);
         System.out.println(authtoken);
         // save username and role to Attribute
-        return new SimpleAuthenticationInfo(authtoken, token, super.getName());
+        return new SimpleAuthenticationInfo(authtoken, jhUser, super.getName());
     }
 }

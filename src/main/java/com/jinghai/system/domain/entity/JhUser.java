@@ -15,10 +15,10 @@ import lombok.experimental.Accessors;
  * 管理员登录表
  * @TableName jh_admin
  */
-@TableName(value ="jh_admin")
+@TableName(value ="jh_user")
 @Data
 @Accessors(chain = true)
-public class JhAdmin implements Serializable {
+public class JhUser implements Serializable {
     /**
      * 管理员编号
      */

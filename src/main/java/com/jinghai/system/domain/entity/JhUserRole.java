@@ -38,6 +38,13 @@ public class JhUserRole implements Serializable {
     @TableField(value = "autho_role")
     private String authoRole;
 
+    /**
+     * 描述
+     */
+    @TableField(value = "autho_describe")
+    private String authoDescribe;
+
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
